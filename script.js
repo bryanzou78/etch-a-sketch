@@ -1,7 +1,8 @@
 const gridContainer = document.getElementById('grid-container');
 const gridMultiplier = 16;
+let isDrawing = false;
 
-//create grid based on number input
+//create grid based on grid multiplier
 
 function createGrid (multiplier) {
     const cellCount = multiplier * multiplier;
@@ -14,20 +15,36 @@ function createGrid (multiplier) {
         gridCell.style.width = cellWidthHeight + 'px';
         gridCell.style.height = cellWidthHeight + 'px';
         
-        gridContainer.appendChild(gridCell);
-        
-//when mouse pressed down, color boxes that mouse hovers over
-
-        gridCell.addEventListener('mouseover', () => {
-            gridCell.style.backgroundColor = 'black';
-        });
-        
+        gridContainer.appendChild(gridCell);    
     }
-    
+}
+
+//when mouse pressed down, color boxes that mouse moves over
+
+function startDrawing() {
+    isDrawing = true;
+}
+
+function stopDrawing() {
+    isDrawing = false;
+}
+
+function colorCell(event) {
+    if (!isDrawing) return;
+
+    const cell = event.target;
+    if (cell.classList.contains('grid-cell')) {
+        cell.style.backgroundColor = 'black';
+    }
 }
 
 createGrid (gridMultiplier);
 
+
+gridContainer.addEventListener('mousedown', startDrawing);
+gridContainer.addEventListener('mouseup', stopDrawing);
+gridContainer.addEventListener('mouseleave', stopDrawing);
+gridContainer.addEventListener('mousemove', colorCell);
 
 
 
