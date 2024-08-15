@@ -1,26 +1,33 @@
 const gridContainer = document.getElementById('grid-container');
 const clearBtn = document.getElementById('clear-btn');
-const gridMultiplier = 16;
+const sizeSlider = document.getElementById('size-slider');
+const defaultMultiplier = 16;
+let gridMultiplier = defaultMultiplier;
 let isDrawing = false;
 
-//create grid based on grid multiplier
+//Create grid based on grid multiplier
+function createGrid () {
+    //Clear existing grid at start of function to avoid multiple grids from slider input
+    gridContainer.innerHTML = '';
 
-function createGrid (multiplier) {
-    const cellCount = multiplier * multiplier;
-    let cellWidthHeight = 600/`${multiplier}`;
+    let cellWidthHeight = 600/gridMultiplier;
 
-    for (let i = 0; i < cellCount; i++) {
+    //Fragment document so that all grid cells are created at the same time
+    let fragment = document.createDocumentFragment();
+
+    for (let i = 0; i < gridMultiplier * gridMultiplier; i++) {
         const gridCell = document.createElement('div');
         gridCell.classList.add('grid-cell');
         
         gridCell.style.width = cellWidthHeight + 'px';
         gridCell.style.height = cellWidthHeight + 'px';
         
-        gridContainer.appendChild(gridCell);    
+        fragment.appendChild(gridCell);    
     }
+    gridContainer.appendChild(fragment);
 }
 
-//when mouse pressed down, color boxes that mouse moves over
+//Track when drawing is active
 
 function startDrawing() {
     isDrawing = true;
@@ -39,7 +46,7 @@ function colorCell(event) {
     }
 }
 
-//clear grid back to white background
+//Clear grid back to white background
  function clearGrid () {
     const cells = document.querySelectorAll('.grid-cell');
     cells.forEach(cell => {
@@ -47,10 +54,34 @@ function colorCell(event) {
     });
  }
 
+//Update grid size based on slider input, requestAnimationFrame so function is executed before next repaint
+let frameRequested = false;
 
-//create grid function call and event listeners
+function updateGrid() {
+    gridMultiplier = sizeSlider.value;
 
-createGrid (gridMultiplier);
+    if (frameRequested) return;
+
+    frameRequested = true;
+    requestAnimationFrame(() => {
+        createGrid();
+        frameRequested = false;
+    })
+}
+
+//Debounce to improve performance by delaying grid creation
+let debounceTimer;
+
+function debounce(func, delay) {
+    return function(...args) {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+
+//Create grid function call and event listeners
+
+createGrid ();
 
 gridContainer.addEventListener('mousedown', startDrawing);
 gridContainer.addEventListener('mouseup', stopDrawing);
@@ -59,6 +90,7 @@ gridContainer.addEventListener('mousemove', colorCell);
 
 clearBtn.addEventListener('click', clearGrid);
 
+sizeSlider.addEventListener('input', debounce(updateGrid, 300));
 
 
 
