@@ -1,6 +1,7 @@
 const gridContainer = document.getElementById('grid-container');
 const clearBtn = document.getElementById('clear-btn');
 const sizeSlider = document.getElementById('size-slider');
+const sliderValue = document.querySelectorAll('.slider-value');
 const defaultMultiplier = 16;
 let gridMultiplier = defaultMultiplier;
 let isDrawing = false;
@@ -9,6 +10,10 @@ let isDrawing = false;
 function createGrid () {
     //Clear existing grid at start of function to avoid multiple grids from slider input
     gridContainer.innerHTML = '';
+
+    sliderValue.forEach(sliderValue => {
+        sliderValue.textContent = gridMultiplier;
+    });
 
     let cellWidthHeight = 600/gridMultiplier;
 
@@ -29,7 +34,8 @@ function createGrid () {
 
 //Track when drawing is active
 
-function startDrawing() {
+function startDrawing(event) {
+    event.preventDefault();
     isDrawing = true;
 }
 
@@ -38,6 +44,7 @@ function stopDrawing() {
 }
 
 function colorCell(event) {
+    event.preventDefault();
     if (!isDrawing) return;
 
     const cell = event.target;
@@ -59,6 +66,10 @@ let frameRequested = false;
 
 function updateGrid() {
     gridMultiplier = sizeSlider.value;
+    
+    sliderValue.forEach(sliderValue => {
+        sliderValue.textContent = gridMultiplier;
+    });
 
     if (frameRequested) return;
 
@@ -90,7 +101,7 @@ gridContainer.addEventListener('mousemove', colorCell);
 
 clearBtn.addEventListener('click', clearGrid);
 
-sizeSlider.addEventListener('input', debounce(updateGrid, 300));
+sizeSlider.addEventListener('input', debounce(updateGrid, 100));
 
 
 
