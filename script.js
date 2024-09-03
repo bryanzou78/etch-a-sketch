@@ -2,6 +2,7 @@ const gridContainer = document.getElementById('grid-container');
 const clearBtn = document.getElementById('clear-btn');
 const sizeSlider = document.getElementById('size-slider');
 const sliderValue = document.querySelectorAll('.slider-value');
+const eraser = document.getElementById('eraser');
 const defaultMultiplier = 16;
 let gridMultiplier = defaultMultiplier;
 let isDrawing = false;
@@ -48,8 +49,13 @@ function colorCell(event) {
     if (!isDrawing) return;
 
     const cell = event.target;
+
     if (cell.classList.contains('grid-cell')) {
-        cell.style.backgroundColor = 'black';
+        if (eraser.checked) {
+            cell.style.backgroundColor = 'white';
+        } else {
+            cell.style.backgroundColor = 'black';
+        }
     }
 }
 
