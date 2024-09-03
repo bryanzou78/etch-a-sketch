@@ -41,7 +41,15 @@ section {
     margin: 10px 20px;
 }
 
+.random-color-container {
+    display: block;
+}
+
 #eraser {
+    margin: 20px;
+}
+
+#random-color {
     margin: 20px;
 }
 

@@ -3,6 +3,8 @@ const clearBtn = document.getElementById('clear-btn');
 const sizeSlider = document.getElementById('size-slider');
 const sliderValue = document.querySelectorAll('.slider-value');
 const eraser = document.getElementById('eraser');
+const randomColor = document.getElementById('random-color');
+const checkboxes = document.querySelectorAll('input[type="checkbox"');
 const defaultMultiplier = 16;
 let gridMultiplier = defaultMultiplier;
 let isDrawing = false;
@@ -53,6 +55,8 @@ function colorCell(event) {
     if (cell.classList.contains('grid-cell')) {
         if (eraser.checked) {
             cell.style.backgroundColor = 'white';
+        } else if (randomColor.checked) {
+            cell.style.backgroundColor = getRandomColor();
         } else {
             cell.style.backgroundColor = 'black';
         }
@@ -66,6 +70,15 @@ function colorCell(event) {
         cell.style.backgroundColor = 'white';
     });
  }
+
+//Random/rainbow color
+
+function getRandomColor() {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r}, ${g}, ${b})`;
+}
 
 //Update grid size based on slider input, requestAnimationFrame so function is executed before next repaint
 let frameRequested = false;
@@ -95,6 +108,19 @@ function debounce(func, delay) {
         debounceTimer = setTimeout(() => func.apply(this, args), delay);
     };
 }
+
+//Allow one checkbox
+checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', function() {
+        if(this.checked) {
+            checkboxes.forEach((cb) => {
+                if (cb !== this) {
+                    cb.checked = false;
+                }
+            });
+        }
+    });
+});
 
 //Create grid function call and event listeners
 
