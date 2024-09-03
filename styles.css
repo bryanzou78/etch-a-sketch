@@ -15,22 +15,30 @@ body {
 }
 
 section {
-    padding: 50px 0;
+    padding: 30px 0;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.left-section {
+    background-color: lightslategray;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 10px;
+
+}
+
 .slider-value {
     font-size: 20px;
     font-weight: bold;
-    margin: 20px;
+    margin: 0px 20px;
 }
 
 
 #size-slider {
     display: block;
-    margin: 10px 20px 20px;
+    margin: 10px 20px;
 }
 
 #eraser {
@@ -69,4 +77,21 @@ section {
 
 .grid-cell:hover {
     background-color: gray !important;
+}
+
+@media (max-width: 900px) {
+    section {
+        flex-direction: column;
+    }
+
+    .left-section {
+        width: 600px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    #size-slider {
+        margin: 0px;
+    }
 }
