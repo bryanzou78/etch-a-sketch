@@ -6,7 +6,7 @@
 }
 
 body {
-    background-color: lightblue;
+    background-color: lightgrey;
 }
 
 .title {
@@ -41,16 +41,16 @@ section {
     margin: 10px 20px;
 }
 
-.random-color-container {
+.eraser-container, .random-color-container, .darken-container {
     display: block;
+    margin: 40px;
 }
 
-#eraser {
-    margin: 20px;
-}
-
-#random-color {
-    margin: 20px;
+.choose-color-container {
+    margin: 40px 0;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 #clear-btn {
@@ -101,5 +101,14 @@ section {
 
     #size-slider {
         margin: 0px;
+    }
+
+    .eraser-container, .random-color-container, .darken-container {
+        display: block;
+        margin: 20px;
+    }
+
+    .choose-color-container strong {
+        padding-left: 10px;
     }
 }

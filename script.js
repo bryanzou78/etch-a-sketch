@@ -4,6 +4,8 @@ const sizeSlider = document.getElementById('size-slider');
 const sliderValue = document.querySelectorAll('.slider-value');
 const eraser = document.getElementById('eraser');
 const randomColor = document.getElementById('random-color');
+const darken = document.getElementById('darken');
+const chooseColor = document.getElementById('choose-color');
 const checkboxes = document.querySelectorAll('input[type="checkbox"');
 const defaultMultiplier = 16;
 let gridMultiplier = defaultMultiplier;
@@ -55,10 +57,22 @@ function colorCell(event) {
     if (cell.classList.contains('grid-cell')) {
         if (eraser.checked) {
             cell.style.backgroundColor = 'white';
+            cell.style.opacity = '';
         } else if (randomColor.checked) {
             cell.style.backgroundColor = getRandomColor();
+            cell.style.opacity = '';
+        } else if (darken.checked) {
+            cell.style.backgroundColor = chooseColor.value;
+            let currentOpacity = parseFloat(cell.style.opacity);
+            cell.style.opacity = 0.1;
+            console.log(currentOpacity);
+            if (currentOpacity < 1) {
+                currentOpacity += 0.1;
+            }
+            cell.style.opacity = currentOpacity;
         } else {
-            cell.style.backgroundColor = 'black';
+            cell.style.backgroundColor = chooseColor.value;
+            cell.style.opacity = '';
         }
     }
 }
@@ -68,6 +82,7 @@ function colorCell(event) {
     const cells = document.querySelectorAll('.grid-cell');
     cells.forEach(cell => {
         cell.style.backgroundColor = 'white';
+        cell.style.opacity = '';
     });
  }
 
@@ -129,7 +144,7 @@ createGrid ();
 gridContainer.addEventListener('mousedown', startDrawing);
 gridContainer.addEventListener('mouseup', stopDrawing);
 gridContainer.addEventListener('mouseleave', stopDrawing);
-gridContainer.addEventListener('mousemove', colorCell);
+gridContainer.addEventListener('mouseenter', colorCell, true);
 
 clearBtn.addEventListener('click', clearGrid);
 
